@@ -1,6 +1,6 @@
 const router = require('express').Router()
-const {getUser} = require('../controllers/user')
+const test = require('../controllers/user')
 
-router.get('/:email', getUser)
+router.get('/:email', test.getUser)
 
 module.exports = router
