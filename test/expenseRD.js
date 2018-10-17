@@ -1,21 +1,17 @@
-const app       = require('../app')
+const server       = require('../app')
 
 const chai      = require('chai')
 const chaiHttp  = require('chai-http')
-const expect    = chai.expect
 
-const Expanse   = require('../models/expense')
+const Expense   = require('../models/expense')
 const User   = require('../models/user')
 
 chai.use(chaiHttp)
 
-describe('Expanse Testing Read and Delete', function() {
-    // hooks before each
-    let idExpanse = null
-    let user = null
+describe('Expense Testing Delete', function() {
+    let exId = null
     
     beforeEach(function(done) {
-
       User.create({
         name : 'asrul',
         email : 'asrul@mail.com',
@@ -23,7 +19,7 @@ describe('Expanse Testing Read and Delete', function() {
       })
         .then((result) => {
           user = result._id
-          Expanse.create({
+          Expense.create({
             date: new Date(),
                 price: 100000,
                 type: 'food and drink',
@@ -31,44 +27,39 @@ describe('Expanse Testing Read and Delete', function() {
                 user: result._id
           })
             .then((result) => {
-              console.log('Ini ', result);
-              idExpanse = result._id
               done()
+              exId = result._id
             }).catch((err) => {
-              done()
+              console.log(err);
             });      
         }).catch((err) => {
-          done()
+          console.log(err);
         });
     })
 
-    afterEach(function(done) {
-      Expanse.remove({}, function(err){
-        done()
-      })
-    })
-
-    describe('delete one expanse', function () {
-      it('it should delete one expanse data ', function (done) {
+    describe('delete one expense', function () {
+      it('it should delete one expense', function (done) {
         chai.request(server)
-        .get('/expanse')
-        .end(function(err, res) {
-          res.body.should.be.an('object').to.have.property('expanse').with.lengthOf(1).should.be.an('object')
-          res.body.expanse[0].should.have.property('createdAt')
-          res.body.expanse[0].should.have.property('updatedAt')
-          res.body.expanse[0].should.have.property('__v')
+        .delete('/expense/'+exId)
+        .end(function(err, res) {  
+          done()
           res.should.have.status(200)
-          chai.request(server)
-          .delete('/expanse/'+res.body.expanse[0]._id)
-          .end(function(err, response){
-            response.should.have.status(201);
-            response.should.not.have.status(404);
-            response.body.should.be.a('object');
-            done();
-          })
+          res.body.should.be.a('object');
+          res.should.not.have.status(404);
         })
       })
     })
 
+    afterEach(function(done) {
+      Expense.remove({}, function(err){
+        done()
+      })
+    })
+
+    afterEach(function(done) {
+      User.remove({}, function(err){
+        done()
+      })
+    })
 
 })
