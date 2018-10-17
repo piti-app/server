@@ -13,7 +13,15 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 require('dotenv').config();
 
+const url = `mongodb://admin:admin123@ds247170.mlab.com:47170/piti-app`
 const port = 4000;
+
+mongoose.connect(url,{ useNewUrlParser: true });
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function() {
+  console.log('We are connected to the database');
+});
 
 app.listen(port || '4000',()=>{
   console.log(`application is on port ${port}`)
