@@ -1,61 +1,74 @@
-const chai = require('chai')
-const chaiHttp = require('chai-http')
+const app       = require('../app')
+
+const chai      = require('chai')
+const chaiHttp  = require('chai-http')
+const expect    = chai.expect
+
+const Expanse   = require('../models/expense')
+const User   = require('../models/user')
+
 chai.use(chaiHttp)
 
-const Expense = require('../models/expense')
-const server = require('../app')
+describe('Expanse Testing Read and Delete', function() {
+    // hooks before each
+    let idExpanse = null
+    let user = null
+    
+    beforeEach(function(done) {
 
-describe('Expance DELETE', function () {
-  let id = ''
-  beforeEach(function (done) {
-    const expance = new Expense({
-      date: new date(),
-      price: 10000,
-      type: 'food and drink',
-      description: 'Makan pecel lele disebelah',
-      user: 1
+      User.create({
+        name : 'asrul',
+        email : 'asrul@mail.com',
+        avatar : 'awawa'
+      })
+        .then((result) => {
+          user = result._id
+          Expanse.create({
+            date: new Date(),
+                price: 100000,
+                type: 'food and drink',
+                description: 'Makan enak di bento sama teman teman',
+                user: result._id
+          })
+            .then((result) => {
+              console.log('Ini ', result);
+              idExpanse = result._id
+              done()
+            }).catch((err) => {
+              done()
+            });      
+        }).catch((err) => {
+          done()
+        });
     })
-    expance.save((err,res) => {
-      id = res._id
-      done()
-    })
-  })
 
-  afterEach(function (done) {
-    Expense.remove({}, function (err) {
-      done()
+    afterEach(function(done) {
+      Expanse.remove({}, function(err){
+        done()
+      })
     })
-  })
 
-  afterEach(function (done) {
-    Expense.remove({}, function (err) {
-      done()
-    })
-  })
-
-  describe('delete one expance', function () {
-    it('it should delete one expance data ', function (done) {
-      chai.request(server)
-      .get('/expanse')
-      .end(function(err, res) {
-        res.body.should.be.an('object').to.have.property('expance').with.lengthOf(1).should.be.an('object')
-        res.body.expance[0].should.have.property('date')
-        res.body.expance[0].should.have.property('type')
-        res.body.expance[0].should.have.property('price')
-        res.body.expance[0].should.have.property('description')
-        res.body.expance[0].should.have.property('createdAt')
-        res.body.expance[0].should.have.property('updatedAt')
-        res.body.expance[0].should.have.property('__v')
-        res.should.have.status(200)
+    describe('delete one expanse', function () {
+      it('it should delete one expanse data ', function (done) {
         chai.request(server)
-        .delete('/expanse/'+res.body.expance[0]._id)
-        .end(function(err, response){
-          response.should.have.status(201);
-          response.should.not.have.status(404);
-          response.body.should.be.a('object');
-          done();
+        .get('/expanse')
+        .end(function(err, res) {
+          res.body.should.be.an('object').to.have.property('expanse').with.lengthOf(1).should.be.an('object')
+          res.body.expanse[0].should.have.property('createdAt')
+          res.body.expanse[0].should.have.property('updatedAt')
+          res.body.expanse[0].should.have.property('__v')
+          res.should.have.status(200)
+          chai.request(server)
+          .delete('/expanse/'+res.body.expanse[0]._id)
+          .end(function(err, response){
+            response.should.have.status(201);
+            response.should.not.have.status(404);
+            response.body.should.be.a('object');
+            done();
+          })
         })
       })
     })
-  })
+
+
 })
