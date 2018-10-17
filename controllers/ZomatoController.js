@@ -5,7 +5,7 @@ module.exports = {
     const latitude = req.body.latitude
     const longtitude = req.body.longtitude
     const ZomatoAPI = process.env.ZOMATO
-    const zomatoUrl = `https://developers.zomato.com/api/v2.1/search?lat=${latitude}&lon=${longtitude}&radius=3000`
+    const zomatoUrl = `https://developers.zomato.com/api/v2.1/search?entity_type=zone&q=hacktiv8&lat=${latitude}&lon=${longtitude}&radius=1000`
     axios({
       method : 'GET',
       url : zomatoUrl,
