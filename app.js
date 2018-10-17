@@ -30,3 +30,5 @@ app.use('/', route)
 app.listen(port || '4000',()=>{
   console.log(`application is on port ${port}`)
 });
+
+module.exports = app
