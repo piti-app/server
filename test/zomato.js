@@ -10,15 +10,31 @@ let server = require('../app.js');
 chai.use(chaiHttp);
 
 describe('Zomato', () => {
-  describe('/GET showing all articles', () => {
-    it('it should GET all the articles', (done) => {
+  describe('/GET showing all zomato restaurant nearby', () => {
+    it('it should GET all zomato restaurant', (done) => {
+      const obj = {
+        latitude : '-6.254590',
+        longtitude : '106.757190'
+      }
+
       chai.request(server)
         .get('/zomato')
+        .set('content-type', 'application/x-www-form-urlencoded')
+        .send(obj)
         .end((err, res) => {
-            res.should.have.status(200);
-            res.body.data.should.be.a('array');
-            res.body.should.have.property('message').eql('success finding zomato data');
-
+          res.should.have.status(200);
+          res.body.data.should.be.a('array');
+          res.body.should.have.property('message').eql('success finding zomato data')
+          res.body.data[0].should.be.a('object');
+          res.body.data[0].should.have.property('name')
+          res.body.data[0].should.have.property('url')
+          res.body.data[0].should.have.property('id')
+          res.body.data[0].should.have.property('locations')
+          res.body.data[0].should.have.property('cuisines')
+          res.body.data[0].should.have.property('photos_url')
+          res.body.data[0].should.have.property('photos_url')
+          res.body.data[0].should.have.property('average_cost_for_two')
+          res.body.data[0].should.have.property('thumb')
           done();
         });
     });
