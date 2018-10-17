@@ -6,6 +6,7 @@ const schema = require('./schema/schema')
 const mongoose = require('mongoose')
 const route = require('./route')
 
+app.use('/zomato',zomato)
 app.use('/graphql',expressGraphQL({
   schema,
   graphiql : true
