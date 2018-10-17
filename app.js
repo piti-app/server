@@ -14,7 +14,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 require('dotenv').config();
 
-const url = `mongodb://admin:admin123@ds247170.mlab.com:47170/piti-app`
+const url = `mongodb://${process.env.USER_MLAB}:${process.env.PASSWORD_MLAB}@ds247170.mlab.com:47170/piti-app`
 const port = 4000;
 
 mongoose.connect(url,{ useNewUrlParser: true });
