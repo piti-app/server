@@ -58,7 +58,6 @@ describe('Recommendation', () => {
           res.body.data.should.be.a('array');
           res.body.should.have.property('message').eql('success getting recommendations')
           res.body.data[0].should.be.a('object');
-          console.log(res.body.budgetPerMeal)
           res.body.budgetPerMeal.should.equal(finalBudget);
           res.body.data[0].restaurant.should.have.property('name')
           res.body.data[0].should.have.property('restaurant')

@@ -50,17 +50,17 @@ describe('user GET', function () {
 
   })
 
-  afterEach(function (done) {
-    User.remove({}, function (err) {
-      done()
-    })
-  })
+//   afterEach(function (done) {
+//     User.remove({}, function (err) {
+//       done()
+//     })
+//   })
 
-  afterEach(function (done) {
-    Expense.remove({}, function (err) {
-      done()
-    })
-  })
+//   afterEach(function (done) {
+//     Expense.remove({}, function (err) {
+//       done()
+//     })
+//   })
 
   describe('get user', function () {
     it('it should get user login data ', function (done) {
@@ -91,18 +91,18 @@ describe('user GET', function () {
   })
 })
 
-describe('user POST', function () {
- afterEach(function (done) {
-    User.remove({}, function (err) {
-      done()
-    })
-  })
+// describe('user POST', function () {
+//  afterEach(function (done) {
+//     User.remove({}, function (err) {
+//       done()
+//     })
+//   })
 
-  afterEach(function (done) {
-    Expense.remove({}, function (err) {
-      done()
-    })
-  })
+//   afterEach(function (done) {
+//     Expense.remove({}, function (err) {
+//       done()
+//     })
+//   })
 
   describe('register user POST', function () {
     it('it should create new user', function (done) {
@@ -127,7 +127,7 @@ describe('user POST', function () {
       })
     })
   })
-})
+
 
 describe('user UPDATE', function () {
   let id_User = ''
@@ -144,11 +144,11 @@ describe('user UPDATE', function () {
     })
   })
 
-  afterEach(function (done) {
-    User.remove({}, function (err) {
-      done()
-    })
-  })
+//   afterEach(function (done) {
+//     User.remove({}, function (err) {
+//       done()
+//     })
+//   })
 
   describe('update one User', function () {
     it('it should update one User budget&main_balance data ', function (done) {
