@@ -6,10 +6,10 @@ const should = chai.should();
 const User = require('../models/user')
 const Expense = require('../models/expense')
 const server = require('../app')
-let id_User = ''
+
 
 describe('user GET', function () {
-  
+  let id_User = ''
   beforeEach(function (done) {
     User.create({
       name: "khodhi",
@@ -90,55 +90,43 @@ describe('user GET', function () {
   })
 })
 
-// describe('trainer POST', function () {
-//   let id_pokemon = ''
-//   beforeEach(function (done) {
-//     const pokemon = new Pokemon({
-//       name: "Charmender",
-//       level: 1,
-//       type: "fire",
-//     })
-//     pokemon.save((err,res) => {
-//       id_pokemon = res._id
-//       done()
-//     })
-//   })
-//   afterEach(function (done) {
-//     Trainer.remove({}, function (err) {
-//       done()
-//     })
-//   })
+describe('user POST', function () {
+ afterEach(function (done) {
+    User.remove({}, function (err) {
+      done()
+    })
+  })
 
-//   afterEach(function (done) {
-//     Pokemon.remove({}, function (err) {
-//       done()
-//     })
-//   })
+  afterEach(function (done) {
+    Expense.remove({}, function (err) {
+      done()
+    })
+  })
 
-//   describe('post one user', function () {
-//     it('it should post one Trainer data ', function (done) {
-//       chai.request(server)
-//       .post('/api/user')
-//       .send({
-//         nickname: "Ash Ketchum",
-//         gender: "Male",
-//         pokemons: [id_pokemon]
-//       })
-//       .end(function(err, res) {
-//         res.body.should.be.an('object').to.have.property('msg')
-//         res.body.should.be.an('object').to.have.property('trainer')
-//         res.body.trainer.should.have.property('pokemons').with.lengthOf(1)
-//         res.body.trainer.should.have.property('nickname')
-//         res.body.trainer.should.have.property('gender')
-//         res.body.trainer.should.have.property('createdAt')
-//         res.body.trainer.should.have.property('updatedAt')
-//         res.body.trainer.should.have.property('__v')
-//         res.should.have.status(201)
-//         done()
-//       })
-//     })
-//   })
-// })
+  describe('register user POST', function () {
+    it('it should create new user', function (done) {
+      chai.request(server)
+      .post('/user')      
+      .send({name: 'test',email:'test@gmail.com',avatar:'gambar'})
+      .end(function(err, res) {                        
+        res.body.should.be.an('object').to.have.property('user').should.be.an('object')  
+        res.body.user.should.have.property('_id')
+        res.body.user.should.have.property('budget')
+        res.body.user.should.have.property('main_balance')
+        res.body.user.should.have.property('money_spent')
+        res.body.user.should.have.property('name')
+        res.body.user.should.have.property('expense')
+        res.body.user.should.have.property('email')
+        res.body.user.should.have.property('avatar')
+        res.body.user.should.have.property('createdAt')
+        res.body.user.should.have.property('updatedAt')
+        res.body.user.should.have.property('__v')                             
+        res.should.have.status(201)
+        done()
+      })
+    })
+  })
+})
 
 // describe('trainer UPDATE', function () {
 //   let id = ''
