@@ -15,4 +15,6 @@ require('dotenv').config();
 
 const port = 4000;
 
-app.listen(port || '4000');
+app.listen(port || '4000',()=>{
+  console.log(`application is on port ${port}`)
+});
