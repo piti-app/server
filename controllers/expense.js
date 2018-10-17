@@ -3,6 +3,7 @@ const Expense = require('../models/expense')
 module.exports = {
     createOne: (req, res) => {
         let objExpense = {
+            date: req.body.date,
             price: req.body.price,
             type: req.body.type,
             description: req.body.description,
