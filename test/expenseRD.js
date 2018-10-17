@@ -8,9 +8,10 @@ const User   = require('../models/user')
 
 chai.use(chaiHttp)
 
+process.env.NODE_ENV = 'test';
 describe('Expense Testing Delete', function() {
     let exId = null
-    
+
     beforeEach(function(done) {
       User.create({
         name : 'asrul',
@@ -31,7 +32,7 @@ describe('Expense Testing Delete', function() {
               exId = result._id
             }).catch((err) => {
               console.log(err);
-            });      
+            });
         }).catch((err) => {
           console.log(err);
         });
@@ -41,7 +42,7 @@ describe('Expense Testing Delete', function() {
       it('it should delete one expense', function (done) {
         chai.request(server)
         .delete('/expense/'+exId)
-        .end(function(err, res) {  
+        .end(function(err, res) {
           done()
           res.should.have.status(200)
           res.body.should.be.a('object');
