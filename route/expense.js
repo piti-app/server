@@ -1,12 +1,8 @@
 const router = require('express').Router()
-const { createOne, deleteOne } = require('../controllers/expense')
+const { deleteOne, createExpense, updateExpense  } = require('../controllers/expense')
 
-router.post('/', createOne)
+router.post('/create', createExpense)
+router.put('/update/:id', updateExpense)
 router.delete('/:id', deleteOne)
-
-<<<<<<< HEAD
-=======
-router.post('/create', createOne)
->>>>>>> Create Update Testing Expense CU
 
 module.exports = router

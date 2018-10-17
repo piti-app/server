@@ -1,20 +1,44 @@
 const Expense = require('../models/expense')
 
 module.exports = {
-    createOne: (req, res) => {
-        let objExpense = {
+    createExpense: (req,res) => {        
+        Expense.create({
             date: req.body.date,
             price: req.body.price,
             type: req.body.type,
             description: req.body.description,
             user: req.body.user
-        }
-        let expense = new Expense(objExpense)
-        expense.save()
-        .then( result => res.status(201).json({result}))
-        .catch( err => res.status(500).json({err}))
-    },
-    deleteOne: (req, res) => {
+        })        
+             .then((result) => {
+                 res.status(201).json({
+                     message: 'create expense success',
+                     expense : result
+                 })
+             }).catch((err) => {
+                 res.status(400).json({
+                     err
+                 })
+             });
+     },
+     updateExpense : (req,res) => {
+         Expense.update({
+             _id: req.params.id
+         },{
+            date: req.body.date,
+            price: req.body.price,
+            type: req.body.type,
+            description: req.body.description,
+         })
+            .then((result) => {
+                res.status(201).json({
+                    message: 'update expense success',
+                    expense : result
+                })
+            }).catch((err) => {
+                res.status(400).json(err)
+            });
+     },
+     deleteOne: (req, res) => {
         Expense.findById({_id:req.params.id})
         .then(result => {
             let expanse = new Expense({_id: result._id})
