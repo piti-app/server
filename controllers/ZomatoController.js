@@ -8,6 +8,7 @@ module.exports = {
     const zomatoUrl = `https://developers.zomato.com/api/v2.1/search?lat=${latitude}&lon=${longtitude}&radius=3000`
     axios({
       method : 'GET',
+      url : zomatoUrl,
       headers : {
         "user-key" : ZomatoAPI
       }
