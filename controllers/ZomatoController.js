@@ -14,7 +14,10 @@ module.exports = {
       }
     })
       .then(response=>{
-        console.log(response)
+        res.status(200).json({
+          data : response.data.restaurants,
+          message : 'success finding zomato data'
+        })
       })
       .catch(error=>{
         console.log(error)
