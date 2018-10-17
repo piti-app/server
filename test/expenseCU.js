@@ -10,6 +10,7 @@ const server = require('../app')
 describe('expense POST & PUT', function () {
     let id_User = ''
     let id_Expense = ''
+    this.timeout(2000000)
     before(function (done) {
       User.create({
         name: "wahyudi",
