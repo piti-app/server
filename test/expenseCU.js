@@ -10,7 +10,7 @@ const server = require('../app')
 describe('expense POST & PUT', function () {
     let id_User = ''
     let id_Expense = ''
-    this.timeout(2000000)
+
     before(function (done) {
       User.create({
         name: "wahyudi",
@@ -93,31 +93,25 @@ describe('expense POST & PUT', function () {
             expect(res.body.expense).be.a('object');
             expect(res.body.expense).have.property('n');
             expect(res.body.expense).have.property('nModified');
-            expect(res.body.expense).have.property('opTime');
-            expect(res.body.expense).have.property('electionId');
             expect(res.body.expense).have.property('ok');
-            expect(res.body.expense).have.property('operationTime');
             expect(res.body.expense.n).be.a('number');
             expect(res.body.expense.nModified).be.a('number');
-            expect(res.body.expense.opTime).be.a('object');
-            expect(res.body.expense.electionId).be.a('string')
             expect(res.body.expense.ok).be.a('number');
-            expect(res.body.expense.operationTime).be.a('string')
             done()
         })
       })
 
-      after(function (done) {
-        User.remove({}, function (err) {
-          done()
-        })
-      })
+      // after(function (done) {
+      //   User.remove({}, function (err) {
+      //     done()
+      //   })
+      // })
     
-      after(function (done) {
-        Expense.remove({}, function (err) {
-          done()
-        })
-      })
+      // after(function (done) {
+      //   Expense.remove({}, function (err) {
+      //     done()
+      //   })
+      // })
 
     })
 })

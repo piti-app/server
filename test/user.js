@@ -3,10 +3,10 @@ const chaiHttp = require('chai-http')
 chai.use(chaiHttp)
 process.env.NODE_ENV = 'test';
 
-// const should = chai.should();
-// const User = require('../models/user')
-// const Expense = require('../models/expense')
-// const server = require('../app')
+const should = chai.should();
+const User = require('../models/user')
+const Expense = require('../models/expense')
+const server = require('../app')
 
 
 describe('user GET', function () {
