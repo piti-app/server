@@ -1,9 +1,5 @@
-<<<<<<< HEAD
 let mongoose = require("mongoose");
 process.env.NODE_ENV = 'test';
-=======
-// let mongoose = require("mongoose");
->>>>>>> resolve conflict testing
 
 // //Chai
 // var chai = require('chai');
