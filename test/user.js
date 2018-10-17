@@ -6,28 +6,47 @@ const should = chai.should();
 const User = require('../models/user')
 const Expense = require('../models/expense')
 const server = require('../app')
+let id_User = ''
 
 describe('user GET', function () {
-  let id_User = ''
+  
   beforeEach(function (done) {
-    const user = new User({
-      username: "khodhi",
+    User.create({
+      name: "khodhi",
       email: "khodhirobbani@gmail.com",
-      avatar: "gambar"     
+      avatar: "gambar"      
     })
-    user.save((err,res) => {
-      id_User = res._id
-      const expense = new Expense({
-        date: new Date(),
-        price: 20000,
-        type: 'food',
-        description: 'kfc ayam',
-        user: id_User,
-      })
-      expense.save((err,res) => {
+    .then((foundUser) => {      
+        id_User = foundUser._id
+        Expense.create({
+          date: new Date(),
+          price: 20000,
+          type: 'food',
+          description: 'kfc ayam',
+          user: id_User,
+        })
+          .then((result_expense) => {              
+              User.findOneAndUpdate({
+                _id : id_User
+              },{
+                $push : {
+                  expense : result_expense._id
+                }
+              })
+                .then((result) => {                                    
+                  done()
+                }).catch((err) => {
+                  done()
+                });
+              
+          }).catch((err) => {
+            done()               
+          });
+    }).catch((err) => {
         done()
-      })
+        
     })
+   
   })
 
   afterEach(function (done) {
@@ -45,11 +64,15 @@ describe('user GET', function () {
   describe('get user', function () {
     it('it should get user login data ', function (done) {
       chai.request(server)
-      .get('/user/:email')
-      .end(function(err, res) {        
-        res.body.should.be.an('object').to.have.property('user').with.lengthOf(1).should.be.an('object')
-        res.body.user.should.have.property('expense').with.lengthOf(1)
-        res.body.user.should.have.property('username')
+      .get('/user/khodhirobbani@gmail.com')
+      .end(function(err, res) { 
+               
+        res.body.should.be.an('object').to.have.property('user').should.be.an('object')  
+        res.body.user.should.have.property('_id')
+        res.body.user.should.have.property('budget')
+        res.body.user.should.have.property('main_balance')
+        res.body.user.should.have.property('money_spent')
+        res.body.user.should.have.property('name')
         res.body.user.should.have.property('email')
         res.body.user.should.have.property('avatar')
         res.body.user.should.have.property('createdAt')
