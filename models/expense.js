@@ -6,7 +6,7 @@ const expenseSchema = new Schema({
     price: Number,
     type: String,
     description: String,
-    owner: { type: Schema.Types.ObjectId, ref: 'User'},
+    user: { type: Schema.Types.ObjectId, ref: 'User'},
 },{
     timestamps:true     
 });
