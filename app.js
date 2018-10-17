@@ -4,6 +4,7 @@ const app = express();
 const cors = require('cors');
 const schema = require('./schema/schema')
 const mongoose = require('mongoose')
+const route = require('./route')
 
 app.use('/graphql',expressGraphQL({
   schema,
@@ -23,6 +24,8 @@ db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
   console.log('We are connected to the database');
 });
+
+app.use('/', route)
 
 app.listen(port || '4000',()=>{
   console.log(`application is on port ${port}`)
