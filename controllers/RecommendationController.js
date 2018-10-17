@@ -28,12 +28,16 @@ module.exports = {
         });
 
         res.status(200).json({
-          recommendations : finalArray
+          message : 'success getting recommendations',
+          data : finalArray,
+          budgetPerMeal : budgetPerMeal
         })
 
       })
       .catch(error=>{
-        console.log(error)
+        res.status(500).json({
+          error
+        })
       })
   }
 }
