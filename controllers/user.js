@@ -15,5 +15,21 @@ module.exports = {
                     err
                 })
             });
-    }    
+    },
+    registerUser : (req,res) => {        
+        User.create({
+            name: req.body.name,
+            email: req.body.email,
+            avatar: req.body.avatar
+        })        
+             .then((result) => {
+                 res.status(201).json({
+                     user : result
+                 })
+             }).catch((err) => {
+                 res.status(400).json({
+                     err
+                 })
+             });
+     }    
 }
