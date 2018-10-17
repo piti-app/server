@@ -2,7 +2,7 @@ const User = require('../models/user')
 
 module.exports = {
     getUser : (req,res) => {
-        
+        console.log(req.params,'===========>')
     }
     // createOne: (req, res) => {
     //     let objExpense = {

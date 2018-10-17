@@ -3,7 +3,7 @@ const expense = require('./expense')
 const zomato = require('./ZomatoRoute')
 const user = require('./user')
 
-router.use('/expense', expense)
+// router.use('/expense', expense)
 router.use('/zomato',zomato)
 router.use('/user',user)
 
