@@ -1,6 +1,7 @@
 const chai = require('chai')
 const chaiHttp = require('chai-http')
 chai.use(chaiHttp)
+process.env.NODE_ENV = 'test';
 
 const should = chai.should();
 const User = require('../models/user')
@@ -14,9 +15,9 @@ describe('user GET', function () {
     User.create({
       name: "khodhi",
       email: "khodhirobbani@gmail.com",
-      avatar: "gambar"      
+      avatar: "gambar"
     })
-    .then((foundUser) => {      
+    .then((foundUser) => {
         id_User = foundUser._id
         Expense.create({
           date: new Date(),
@@ -25,7 +26,7 @@ describe('user GET', function () {
           description: 'kfc ayam',
           user: id_User,
         })
-          .then((result_expense) => {              
+          .then((result_expense) => {
               User.findOneAndUpdate({
                 _id : id_User
               },{
@@ -33,20 +34,20 @@ describe('user GET', function () {
                   expense : result_expense._id
                 }
               })
-                .then((result) => {                                    
+                .then((result) => {
                   done()
                 }).catch((err) => {
                   done()
                 });
-              
+
           }).catch((err) => {
-            done()               
+            done()
           });
     }).catch((err) => {
         done()
-        
+
     })
-   
+
   })
 
   afterEach(function (done) {
@@ -65,9 +66,9 @@ describe('user GET', function () {
     it('it should get user login data ', function (done) {
       chai.request(server)
       .get('/user/khodhirobbani@gmail.com')
-      .end(function(err, res) { 
-               
-        res.body.should.be.an('object').to.have.property('user').should.be.an('object')  
+      .end(function(err, res) {
+
+        res.body.should.be.an('object').to.have.property('user').should.be.an('object')
         res.body.user.should.have.property('_id')
         res.body.user.should.have.property('budget')
         res.body.user.should.have.property('main_balance')
@@ -82,7 +83,7 @@ describe('user GET', function () {
         res.body.user.expense[0].should.have.property('date')
         res.body.user.expense[0].should.have.property('type')
         res.body.user.expense[0].should.have.property('price')
-        res.body.user.expense[0].should.have.property('description')                
+        res.body.user.expense[0].should.have.property('description')
         res.should.have.status(200)
         done()
       })
@@ -106,10 +107,10 @@ describe('user POST', function () {
   describe('register user POST', function () {
     it('it should create new user', function (done) {
       chai.request(server)
-      .post('/user')      
+      .post('/user')
       .send({name: 'test',email:'test@gmail.com',avatar:'gambar'})
-      .end(function(err, res) {                        
-        res.body.should.be.an('object').to.have.property('user').should.be.an('object')  
+      .end(function(err, res) {
+        res.body.should.be.an('object').to.have.property('user').should.be.an('object')
         res.body.user.should.have.property('_id')
         res.body.user.should.have.property('budget')
         res.body.user.should.have.property('main_balance')
@@ -120,7 +121,7 @@ describe('user POST', function () {
         res.body.user.should.have.property('avatar')
         res.body.user.should.have.property('createdAt')
         res.body.user.should.have.property('updatedAt')
-        res.body.user.should.have.property('__v')                             
+        res.body.user.should.have.property('__v')
         res.should.have.status(201)
         done()
       })
@@ -134,13 +135,13 @@ describe('user UPDATE', function () {
     User.create({
       name: "khodhi",
       email: "khodhirobbani@gmail.com",
-      avatar: "gambar"      
+      avatar: "gambar"
     })
-    .then((foundUser) => {              
+    .then((foundUser) => {
         done()
     }).catch((err) => {
-        done()        
-    })   
+        done()
+    })
   })
 
   afterEach(function (done) {
@@ -157,14 +158,14 @@ describe('user UPDATE', function () {
         budget: 25000,
         main_balance: 22000
       })
-      .end(function(err, res) {                
-        res.body.should.be.an('object').to.have.property('user').should.be.an('object')  
-        res.body.user.should.have.property('nModified') 
+      .end(function(err, res) {
+        res.body.should.be.an('object').to.have.property('user').should.be.an('object')
+        res.body.user.should.have.property('nModified')
         res.body.user.nModified.should.to.equal(1)
-        res.body.user.should.have.property('n')   
-        res.body.user.n.should.to.equal(1)  
-        res.body.user.should.have.property('ok')  
-        res.body.user.ok.should.to.equal(1)   
+        res.body.user.should.have.property('n')
+        res.body.user.n.should.to.equal(1)
+        res.body.user.should.have.property('ok')
+        res.body.user.ok.should.to.equal(1)
         res.should.have.status(201)
         done()
       })

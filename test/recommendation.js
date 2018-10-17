@@ -1,5 +1,6 @@
 let mongoose = require("mongoose");
 let User = require('../models/user')
+process.env.NODE_ENV = 'test';
 
 //Chai
 var chai = require('chai');
