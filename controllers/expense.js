@@ -6,7 +6,7 @@ module.exports = {
             price: req.body.price,
             type: req.body.type,
             description: req.body.description,
-            user: req.decoded._id
+            user: req.body._id
         }
         let expense = new Expense(objExpense)
         expense.save()
