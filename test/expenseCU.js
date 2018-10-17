@@ -1,53 +1,92 @@
-let mongoose = require("mongoose");
+const chai = require('chai')
+const chaiHttp = require('chai-http')
+chai.use(chaiHttp)
 
-//Chai
-var chai = require('chai');
-var assert = chai.assert;
-var expect = chai.expect;
-var should = chai.should();
-let chaiHttp = require('chai-http');
-let server = require('../app.js');
-chai.use(chaiHttp);
-require('dotenv').config()
+const should = chai.should();
+const User = require('../models/user')
+const Expense = require('../models/expense')
+const server = require('../app')
 
-var Expense = require('../models/expense');
-
-describe('Expense', () => {
-
-    describe('Expense Create & Update', function() {
-        this.timeout(200000)
-        it('it should POST expense create', (done) => {
-
-            chai.request(server)
-            .post('/')
-            .send({
-                date: '2018-08-19T16:44:07.109Z',
-                price: 10000,
-                type: 'Test',
-                description: 'Bike',
-                user: '080232'
-            })
-            .end(function(err, res) {
-                console.log(res.body)
-                // console.log(res)
-                // expect(res).to.have.status(201)  
-                done();
-            })
-
+describe('expense POST', function () {
+    let id_User = ''
+    this.timeout(2000000)
+    beforeEach(function (done) {
+      User.create({
+        name: "wahyudi",
+        email: "wahyudisetiaji@gmail.com",
+        avatar: "gambar"      
+      })
+      .then((foundUser) => {      
+          id_User = foundUser._id
+          done()               
+      }).catch((err) => {
+          done()
+          
+      })
+     
+    })
+  
+    after(function (done) {
+      User.remove({}, function (err) {
+        done()
+      })
+    })
+  
+    after(function (done) {
+      Expense.remove({}, function (err) {
+        done()
+      })
+    })
+  
+    describe('create Expense', function () {
+      it('it should create expense', function (done) {
+        chai.request(server)
+        .post('/expense/create')
+        .send({
+            date: new Date(),
+            price: 15000,
+            type: 'food',
+            description: 'Warteg',
+            user: id_User,
         })
-
-        // after(function (done) {
-        //     mongoose.connect(`mongodb://${process.env.USER_MLAB}:${process.env.PASSWORD_MLAB}@ds247170.mlab.com:47170/piti-app`, { useNewUrlParser: true })
-        //             .then (function () {
-        //                 console.log('DROP Expense')
-        //                 Expense.collection.drop()
-        //                 done()
-        //             }) 
-        //             .catch (function (err) {
-        //                 done()
-        //             })   
-        // })
-
+        .end(function(err, res) { 
+            res.body.should.be.an('object').to.have.property('user').should.be.an('object')  
+            res.body.user.should.have.property('_id')
+            res.body.user.should.have.property('data')
+            res.body.user.should.have.property('price')
+            res.body.user.should.have.property('type')
+            res.body.user.should.have.property('description')
+            res.body.user.should.have.property('user')
+            res.body.user.should.have.property('createdAt')
+            res.body.user.should.have.property('updatedAt')
+            res.body.user.should.have.property('__v')                             
+            res.should.have.status(201)
+            done()
+        })
+      })
     })
 
+    describe('update Expense', function () {
+        it('it should update expense', function (done) {
+          chai.request(server)
+          .put('/expense/update')
+          .send({
+              date: new Date(),
+              price: 15000,
+              type: 'food',
+              description: 'Solaria',
+              user: id_User,
+          })
+          .end(function(err, res) { 
+              res.body.user.should.have.property('nModified') 
+              res.body.user.nModified.should.to.equal(1)
+              res.body.user.should.have.property('n')   
+              res.body.user.n.should.to.equal(1)  
+              res.body.user.should.have.property('ok')  
+              res.body.user.ok.should.to.equal(1)                               
+              res.should.have.status(201)
+              done()
+          })
+        })
+      })
 })
