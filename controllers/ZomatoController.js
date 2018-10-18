@@ -14,6 +14,7 @@ module.exports = {
       }
     })
       .then(response=>{
+        console.log(response.data.nearby_restaurants.length)
         res.status(200).json({
           data : response.data.nearby_restaurants,
           message : 'success finding zomato data'
