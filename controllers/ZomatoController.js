@@ -5,7 +5,7 @@ module.exports = {
     const latitude = req.body.latitude
     const longtitude = req.body.longtitude
     const ZomatoAPI = process.env.ZOMATO
-    const zomatoUrl = `https://developers.zomato.com/api/v2.1/search?entity_type=subzone&q=pondok%20indah&lat=${latitude}&lon=${longtitude}&radius=1000`
+    const zomatoUrl = `https://developers.zomato.com/api/v2.1/geocode?lat=${latitude}&lon=${longtitude}`
     axios({
       method : 'GET',
       url : zomatoUrl,
@@ -15,7 +15,7 @@ module.exports = {
     })
       .then(response=>{
         res.status(200).json({
-          data : response.data.restaurants,
+          data : response.data.nearby_restaurants,
           message : 'success finding zomato data'
         })
       })
