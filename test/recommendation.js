@@ -45,10 +45,16 @@ describe('Recommendation', () => {
         longtitude : '106.757190',
         main_balance : 3000000,
         money_spent : 500000,
-        budget : 200000
+        budget : 200000,
+        date : new Date()
       }
 
-      const finalBudget = 58974
+      const moneyLeft = Number(obj.main_balance) - Number(obj.money_spent) - Number(obj.budget)
+      const today = new Date(obj.date)
+      let day = today.getDate()
+      let daysLeft = 30 - day
+      let budgetPerMeal = Math.floor(moneyLeft/(daysLeft*3))
+      const finalBudget = budgetPerMeal
       chai.request(server)
         .post('/recommendation')
         .set('content-type', 'application/x-www-form-urlencoded')
@@ -69,6 +75,47 @@ describe('Recommendation', () => {
           res.body.data[0].restaurant.should.have.property('photos_url')
           res.body.data[0].restaurant.should.have.property('average_cost_for_two')
           res.body.data[0].restaurant.should.have.property('thumb')
+          done();
+        });
+    });
+
+    it('it should GET all zomato restaurant nearby that suits budget using own database', (done) => {
+      const obj = {
+        latitude : '-6.254590',
+        longtitude : '106.757190',
+        main_balance : 3000000,
+        money_spent : 500000,
+        budget : 200000,
+        date : new Date()
+      }
+
+      const moneyLeft = Number(obj.main_balance) - Number(obj.money_spent) - Number(obj.budget)
+      const today = new Date(obj.date)
+      let day = today.getDate()
+      let daysLeft = 30 - day
+      let budgetPerMeal = Math.floor(moneyLeft/(daysLeft*3))
+      const finalBudget = budgetPerMeal
+      chai.request(server)
+        .post('/recommendation/newRecommendation')
+        .set('content-type', 'application/x-www-form-urlencoded')
+        .send(obj)
+        .end((err, res) => {
+          res.should.have.status(200);
+          console.log(res.body)
+          res.body.data.should.be.a('array');
+          res.body.should.have.property('message').eql('success getting recommendations')
+          // res.body.data[0].should.be.a('object');
+          res.body.budgetPerMeal.should.equal(finalBudget);
+          // res.body.data[0].restaurant.should.have.property('name')
+          // res.body.data[0].should.have.property('restaurant')
+          // res.body.data[0].restaurant.should.have.property('url')
+          // res.body.data[0].restaurant.should.have.property('id')
+          // res.body.data[0].restaurant.should.have.property('location')
+          // res.body.data[0].restaurant.should.have.property('cuisines')
+          // res.body.data[0].restaurant.should.have.property('photos_url')
+          // res.body.data[0].restaurant.should.have.property('photos_url')
+          // res.body.data[0].restaurant.should.have.property('average_cost_for_two')
+          // res.body.data[0].restaurant.should.have.property('thumb')
           done();
         });
     });
