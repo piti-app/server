@@ -25,18 +25,18 @@ module.exports = {
             price: req.body.price,
             type: req.body.type,
             description: req.body.description,
-            url: url,
-            user: req.params.id
+            url: url
         })        
              .then((result) => {
         
                 let idExpense = result._id
                 
                 User.findOneAndUpdate(
-                    {_id: req.params.id},
+                    {email: req.params.email},
                     {$push: {expense: idExpense}}
                     )
                     .then((result) => {
+          
                         res.status(201).json({
                             message: 'create expense success',
                             user: result
