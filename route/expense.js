@@ -1,7 +1,7 @@
 const router = require('express').Router()
 const { deleteOne, createExpense, updateExpense  } = require('../controllers/expense')
 
-router.post('/create/:id', createExpense)
+router.post('/create/:email', createExpense)
 router.put('/update/:id', updateExpense)
 router.delete('/:id', deleteOne)
 
