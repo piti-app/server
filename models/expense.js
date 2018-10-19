@@ -6,6 +6,7 @@ const expenseSchema = new Schema({
     price: Number,
     type: String,
     description: String,
+    url: String,
     user: { type: Schema.Types.ObjectId, ref: 'User'},
 },{
     timestamps:true     
