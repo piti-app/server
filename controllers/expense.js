@@ -1,5 +1,11 @@
 const Expense = require('../models/expense')
 const User = require('../models/user')
+const Admin = require('firebase-admin')
+const serviceAccount = require('../piti-app-firebase-adminsdk-jyrwd-e163bb63fa.json')
+Admin.initializeApp({
+    credential: Admin.credential.cert(serviceAccount),
+    databaseURL: "https://piti-app.firebaseio.com"
+  });
 
 module.exports = {
     createExpense: (req,res) => { 
@@ -19,7 +25,15 @@ module.exports = {
         }  else {
             url = '../assets/icons/user.png'
         }  
-
+        let registrationToken = req.body.fcmToken
+      
+        var message = {
+            notification: {
+              title: 'cieee',
+              body: 'asekkkk'
+            },
+            token: registrationToken
+          };     
         Expense.create({
             date: req.body.date,
             price: req.body.price,
@@ -36,12 +50,16 @@ module.exports = {
                     {$push: {expense: idExpense}}
                     )
                     .then((result) => {
-          
-                        res.status(201).json({
-                            message: 'create expense success',
-                            user: result
-                        })
-
+                        Admin.messaging().send(message)
+                            .then((result) => {                               
+                                res.status(201).json({
+                                    message: 'create expense success',
+                                    user: result
+                                })
+                                
+                            }).catch((err) => {
+                                console.log(err)
+                            });                
                     })
                     .catch((err) => {
                         res.status(400).json({
