@@ -21,8 +21,8 @@ if(process.env.NODE_ENV === 'test'){
 }
 else{
   // url = `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@ds159772.mlab.com:59772/blog`;
-  // url = `mongodb://${process.env.USER_MLAB}:${process.env.PASSWORD_MLAB}@ds247170.mlab.com:47170/piti-app`;
-  url='mongodb://movie:movie17@ds129233.mlab.com:29233/movie'
+  url = `mongodb://${process.env.USER_MLAB}:${process.env.PASSWORD_MLAB}@ds247170.mlab.com:47170/piti-app`;
+  // url='mongodb://movie:movie17@ds129233.mlab.com:29233/movie'
 }
 
 const port = 4000;
