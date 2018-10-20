@@ -16,7 +16,7 @@ module.exports = {
                 })
             });
     },
-    registerUser : (req,res) => {        
+    registerUser : (req,res) => {      
         User.create({
             name: req.body.name,
             email: req.body.email,
@@ -53,6 +53,7 @@ module.exports = {
            email : req.params.email
         },{
             name: req.body.name,
+            avatar: req.body.avatar,
             email: req.body.email,
             budget : req.body.budget,
             main_balance:  req.body.main_balance
