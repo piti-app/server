@@ -46,6 +46,7 @@ module.exports = {
   getNewRecommendation : (req,res) =>{
     const moneyLeft = Number(req.body.main_balance) - Number(req.body.money_spent) - Number(req.body.budget)
     const today = new Date()
+    console.log(moneyLeft)
     let day = today.getDate()
     let daysLeft = 30 - day
     let budgetPerMeal = Math.floor(moneyLeft/(daysLeft*3))
