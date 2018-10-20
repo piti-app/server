@@ -47,5 +47,23 @@ module.exports = {
             }).catch((err) => {
                 res.status(400).json(err)
             });
-     }
+     },
+     updateProfileUser : (req,res) => {
+        User.update({
+           email : req.params.email
+        },{
+            name: req.body.name,
+            email: req.body.email,
+            budget : req.body.budget,
+            main_balance:  req.body.main_balance
+        })
+           .then((result) => {
+               res.status(201).json({
+                   msg : 'success edit budget and main balance',
+                   user : result
+               })
+           }).catch((err) => {
+               res.status(400).json(err)
+           });
+    }
 }
