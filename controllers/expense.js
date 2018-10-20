@@ -44,7 +44,7 @@ module.exports = {
                         let total_spent = user.money_spent + result.price
                         let saving_goal = user.budget
                         let maxDaySpentMoney = (balance - saving_goal) / 30
-                        
+
                         if ( total_spent > maxDaySpentMoney) {
                             message = {
                                 notification: {
@@ -54,15 +54,19 @@ module.exports = {
                                 token: registrationToken
                             }
                         }
-                        
+                        console.log(total_spent)
                         User.findOneAndUpdate({
                                 email: req.params.email
                             }, {
                                 $push: {
                                     expense: idExpense
+                                },
+                                $set : {
+                                    money_spent : total_spent
                                 }
                             })
                             .then((result) => {
+                                console.log(result)
                                if(message){
 
                                    Admin.messaging().send(message)
@@ -71,13 +75,13 @@ module.exports = {
                                                message: 'create expense success',
                                                user: result
                                            })
-   
+
                                        }).catch((err) => {
                                            console.log(err)
                                        });
                                }
                                else {
-      
+
                                 res.status(201).json({
                                     message: 'create expense success',
                                     user: result
