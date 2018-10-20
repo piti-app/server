@@ -35,7 +35,6 @@ module.exports = {
                 url: url
             })
             .then((result) => {
-
                 let idExpense = result._id
                 User.findOne({
                         email: req.params.email
@@ -45,9 +44,6 @@ module.exports = {
                         let total_spent = user.money_spent + result.price
                         let saving_goal = user.budget
                         let maxDaySpentMoney = (balance - saving_goal) / 30
-                        console.log('====> max spent', maxDaySpentMoney)
-                        console.log('====> total spent',total_spent)
-                        
                         
                         if ( total_spent > maxDaySpentMoney) {
                             message = {
@@ -68,8 +64,7 @@ module.exports = {
                             })
                             .then((result) => {
                                if(message){
-                                   console.log('masuk pak eko');
-                                   
+
                                    Admin.messaging().send(message)
                                        .then((result) => {
                                            res.status(201).json({
@@ -82,8 +77,7 @@ module.exports = {
                                        });
                                }
                                else {
-                                   console.log('huft');
-                                   
+      
                                 res.status(201).json({
                                     message: 'create expense success',
                                     user: result
