@@ -52,7 +52,9 @@ module.exports = {
                         let balance = user.main_balance
                         let total_spent = user.money_spent + result.price
                         let saving_goal = user.budget
-                        let maxDaySpentMoney = (balance - saving_goal) / 30
+                        let date = new Date()
+                        let dd = date.getDate()
+                        let maxDaySpentMoney = (balance - saving_goal) / (30-dd)
                         if(setDate() == setDate(req.body.date)){
                             if ( expensesToday.reduce(reducer) > maxDaySpentMoney) {                                
                                 message = {
