@@ -1,6 +1,7 @@
 const Expense = require('../models/expense')
 const User = require('../models/user')
 const Admin = require('firebase-admin')
+const setDate = require('../helper/date')
 const serviceAccount = require('../piti-app-firebase-adminsdk-jyrwd-e163bb63fa.json')
 Admin.initializeApp({
     credential: Admin.credential.cert(serviceAccount),
@@ -39,22 +40,42 @@ module.exports = {
                 User.findOne({
                         email: req.params.email
                     })
+                    .populate('expense')
                     .then((user) => {
+                        let expensesToday = []
+                        user.expense.forEach(item =>{
+                            if(setDate(item.date)== setDate()){                                   
+                            expensesToday.push(item.price)
+                            }
+                        }) 
+                        const reducer = (accumulator, currentValue) => accumulator + currentValue;
                         let balance = user.main_balance
                         let total_spent = user.money_spent + result.price
                         let saving_goal = user.budget
+<<<<<<< HEAD
+<<<<<<< HEAD
+                        let date = new Date()
+                        let dd = date.getDate()
+                        let maxDaySpentMoney = (balance - saving_goal) / (30-dd)
+=======
                         let maxDaySpentMoney = (balance - saving_goal) / 30
-
-                        if ( total_spent > maxDaySpentMoney) {
-                            message = {
-                                notification: {
-                                    title: 'WARNING',
-                                    body: 'you spent money too much out from your plan'
-                                },
-                                token: registrationToken
+>>>>>>> upadate server add
+=======
+                        let date = new Date()
+                        let dd = date.getDate()
+                        let maxDaySpentMoney = (balance - saving_goal) / (30-dd)
+>>>>>>> done
+                        if(setDate() == setDate(req.body.date)){
+                            if ( expensesToday.reduce(reducer) > maxDaySpentMoney) {                                
+                                message = {
+                                    notification: {
+                                        title: 'WARNING',
+                                        body: 'you spent money too much out from your plan'
+                                    },
+                                    token: registrationToken
+                                }
                             }
-                        }
-                        console.log(total_spent)
+                        }                        
                         User.findOneAndUpdate({
                                 email: req.params.email
                             }, {
@@ -65,10 +86,8 @@ module.exports = {
                                     money_spent : total_spent
                                 }
                             })
-                            .then((result) => {
-                                console.log(result)
+                            .then((result) => {                         
                                if(message){
-
                                    Admin.messaging().send(message)
                                        .then((result) => {
                                            res.status(201).json({
@@ -81,7 +100,6 @@ module.exports = {
                                        });
                                }
                                else {
-
                                 res.status(201).json({
                                     message: 'create expense success',
                                     user: result
