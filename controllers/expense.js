@@ -184,11 +184,14 @@ module.exports = {
                     })
                     .populate('expense')
                     .then((result) => {
-                        
-                        let newMoney_spent = result.main_balance - price
+                        let newTotal_balance = result.main_balance + price
+                        let newMoney_spent = result.money_spent - price
                         User.update(
                             { email: email },
-                            { main_balance: newMoney_spent }
+                            { 
+                                main_balance: newTotal_balance, 
+                                money_spent: newMoney_spent
+                            }
                         )
                             .then((result) => {
                                 
