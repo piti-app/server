@@ -42,10 +42,15 @@ describe('Expense Testing Delete', function() {
       it('it should delete one expense', function (done) {
         chai.request(server)
         .delete('/expense/'+exId)
+        .send({
+          email: 'asrul@mail.com'
+        })
         .end(function(err, res) {
-          res.should.have.status(200)
-          res.body.should.be.a('object');
+          res.should.have.status(201)
+          res.body.should.be.a('object')
           res.should.not.have.status(404);
+          res.body.should.have.property('message')
+          res.body.should.have.property('expense')
           done()
         })
       })
