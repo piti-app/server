@@ -44,38 +44,46 @@ module.exports = {
                     .then((user) => {
                         let expensesToday = []
                         user.expense.forEach(item =>{
-                            if(setDate(item.date)== setDate()){                                   
+                            if(setDate(item.date)== setDate()){
                             expensesToday.push(item.price)
                             }
-                        }) 
+                        })
                         const reducer = (accumulator, currentValue) => accumulator + currentValue;
                         let balance = user.main_balance
                         let total_spent = user.money_spent + result.price
                         let saving_goal = user.budget
-<<<<<<< HEAD
-<<<<<<< HEAD
                         let date = new Date()
                         let dd = date.getDate()
                         let maxDaySpentMoney = (balance - saving_goal) / (30-dd)
-=======
-                        let maxDaySpentMoney = (balance - saving_goal) / 30
->>>>>>> upadate server add
-=======
-                        let date = new Date()
-                        let dd = date.getDate()
-                        let maxDaySpentMoney = (balance - saving_goal) / (30-dd)
->>>>>>> done
+                        console.log(expensesToday.length)
+                        console.log(maxDaySpentMoney)
+                        console.log(registrationToken)
                         if(setDate() == setDate(req.body.date)){
-                            if ( expensesToday.reduce(reducer) > maxDaySpentMoney) {                                
-                                message = {
-                                    notification: {
-                                        title: 'WARNING',
-                                        body: 'you spent money too much out from your plan'
-                                    },
-                                    token: registrationToken
+                            if( expensesToday.length!==0){
+                                console.log('udah belanja hari ini')
+                                if ( expensesToday.reduce(reducer) > maxDaySpentMoney) {
+                                    message = {
+                                        notification: {
+                                            title: 'WARNING',
+                                            body: 'you spent money too much out from your plan'
+                                        },
+                                        token: registrationToken
+                                    }
                                 }
                             }
-                        }                        
+                            else {
+                                console.log('belom belanja hari ini')
+                                if ( req.body.price > maxDaySpentMoney) {
+                                    message = {
+                                        notification: {
+                                            title: 'WARNING',
+                                            body: 'you spent money too much out from your plan'
+                                        },
+                                        token: registrationToken
+                                    }
+                                }
+                            }
+                        }
                         User.findOneAndUpdate({
                                 email: req.params.email
                             }, {
@@ -86,7 +94,7 @@ module.exports = {
                                     money_spent : total_spent
                                 }
                             })
-                            .then((result) => {                         
+                            .then((result) => {
                                if(message){
                                    Admin.messaging().send(message)
                                        .then((result) => {
