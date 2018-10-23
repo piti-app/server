@@ -155,12 +155,46 @@ module.exports = {
                 _id: req.params.id
             })
             .then(result => {
+                let email = req.body.email
+                let id = result._id
+                let price = result.price
                 let expanse = new Expense({
-                    _id: result._id
+                    _id: id
                 })
+                
                 expanse.remove()
-                    .then(response => res.status(200).json(response))
-                    .catch(err => res.status(500).json(err))
+                .then((result) => {
+
+                    User.findOne({
+                        email: email
+                    })
+                    .populate('expense')
+                    .then((result) => {
+                        
+                        let newMoney_spent = result.main_balance - price
+                        User.update(
+                            { email: email },
+                            { main_balance: newMoney_spent }
+                        )
+                            .then((result) => {
+                                
+                                 res.status(201).json({
+                                    message: 'delete expense & update user success',
+                                    expense: result
+                                })
+                            })
+                            .catch((err) => {
+                                
+                            });
+         
+                    })
+                    .catch((err) => {
+                        console.log(err)
+                    });
+                   
+                }).catch((err) => {
+                    res.status(400).json(err)
+                });
             })
             .catch(err => res.status(500).json(err))
     }
