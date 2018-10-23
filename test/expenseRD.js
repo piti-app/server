@@ -43,10 +43,10 @@ describe('Expense Testing Delete', function() {
         chai.request(server)
         .delete('/expense/'+exId)
         .end(function(err, res) {
-          done()
           res.should.have.status(200)
           res.body.should.be.a('object');
           res.should.not.have.status(404);
+          done()
         })
       })
     })

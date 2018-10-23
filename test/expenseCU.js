@@ -52,8 +52,7 @@ describe('expense POST & PUT', function () {
             url: '../assets/icons/fried-egg.png',
             fcmToken: 'dGGj3Yk2Z-k:APA91bHc4y2ek7bn6mIXUpOlFLscXtxQ6x7YwM9_iwxeSKprohbNi_Ji0BhIK0ajEc33Espg8XpHRTqTF5gHq1qTuFWztPiDaN5m4-NXym3ZyBQ5WQg7G4Y51T_4LwNcHGrJDJaTPf3O'
         })
-        .end(function(err, res) { 
-            console.log('ini loh \n', res.body);
+        .end(function(err, res) {
             expect(res).to.have.status(201)
             expect(res).be.json;
             expect(res.body).be.a('object');
@@ -94,17 +93,17 @@ describe('expense POST & PUT', function () {
         })
       })
 
-      // after(function (done) {
-      //   User.remove({}, function (err) {
-      //     done()
-      //   })
-      // })
+      after(function (done) {
+        User.remove({}, function (err) {
+          done()
+        })
+      })
     
-      // after(function (done) {
-      //   Expense.remove({}, function (err) {
-      //     done()
-      //   })
-      // })
+      after(function (done) {
+        Expense.remove({}, function (err) {
+          done()
+        })
+      })
 
     })
 })
