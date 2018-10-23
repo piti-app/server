@@ -101,7 +101,6 @@ describe('Recommendation', () => {
         .send(obj)
         .end((err, res) => {
           res.should.have.status(200);
-          console.log(res.body)
           res.body.data.should.be.a('array');
           res.body.should.have.property('message').eql('success getting recommendations')
           // res.body.data[0].should.be.a('object');

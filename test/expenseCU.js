@@ -14,7 +14,7 @@ describe('expense POST & PUT', function () {
     before(function (done) {
       User.create({
         name: "wahyudi",
-        email: "wahyudisetiaji@gmail.com",
+        email: "khodhirobbani@gmail.com",
         avatar: "gambar"      
       })
       .then((foundUser) => {      
@@ -41,34 +41,26 @@ describe('expense POST & PUT', function () {
   
 
     describe('create & update Expense', function () {
-
       it('it should create expense', function (done) {
         chai.request(server)
-        .post('/expense/create')
+        .post('/expense/create/khodhirobbani@gmail.com')
         .send({
             date: new Date(),
             price: 15000,
             type: 'food',
             description: 'Warteg',
-            user: id_User,
+            url: '../assets/icons/fried-egg.png',
+            fcmToken: 'dGGj3Yk2Z-k:APA91bHc4y2ek7bn6mIXUpOlFLscXtxQ6x7YwM9_iwxeSKprohbNi_Ji0BhIK0ajEc33Espg8XpHRTqTF5gHq1qTuFWztPiDaN5m4-NXym3ZyBQ5WQg7G4Y51T_4LwNcHGrJDJaTPf3O'
         })
-        .end(function(err, res) { 
-            expect(res).to.have.status(201)  
+        .end(function(err, res) {
+            expect(res).to.have.status(201)
             expect(res).be.json;
             expect(res.body).be.a('object');
             expect(res.body).have.property('message');
+            expect(res.body).have.property('user');
             expect(res.body.message).equal('create expense success');
             expect(res.body.message).be.a('string');
-            expect(res.body).have.property('expense');
-            expect(res.body.expense).be.a('object');
-            expect(res.body.expense).have.property('_id');
-            expect(res.body.expense).have.property('date');
-            expect(res.body.expense).have.property('price');
-            expect(res.body.expense).have.property('type');
-            expect(res.body.expense).have.property('description');
-            expect(res.body.expense).have.property('user');
-            expect(res.body.expense).have.property('createdAt');
-            expect(res.body.expense).have.property('updatedAt');
+            expect(res.body.user).be.a('string');
             done()
         })
       })
@@ -101,17 +93,17 @@ describe('expense POST & PUT', function () {
         })
       })
 
-      // after(function (done) {
-      //   User.remove({}, function (err) {
-      //     done()
-      //   })
-      // })
+      after(function (done) {
+        User.remove({}, function (err) {
+          done()
+        })
+      })
     
-      // after(function (done) {
-      //   Expense.remove({}, function (err) {
-      //     done()
-      //   })
-      // })
+      after(function (done) {
+        Expense.remove({}, function (err) {
+          done()
+        })
+      })
 
     })
 })

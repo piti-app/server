@@ -1,12 +1,26 @@
 const Expense = require('../models/expense')
 const User = require('../models/user')
 const Admin = require('firebase-admin')
-const setDate = require('../helper/date')
 const serviceAccount = require('../piti-app-firebase-adminsdk-jyrwd-e163bb63fa.json')
 Admin.initializeApp({
     credential: Admin.credential.cert(serviceAccount),
     databaseURL: "https://piti-app.firebaseio.com"
 });
+
+function setDate (params){
+    let date ;
+    if(params){
+         date = new Date(params)
+    }
+    else {
+         date = new Date()
+    }
+    let dd = date.getDate()
+    let mm = date.getMonth()
+    let yy = date.getFullYear()
+    let today =  `${dd}-${mm}-${yy}`
+    return today
+}
 
 module.exports = {
     createExpense: (req, res) => {
