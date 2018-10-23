@@ -65,6 +65,9 @@ module.exports = {
                         const reducer = (accumulator, currentValue) => accumulator + currentValue;
                         let balance = user.main_balance
                         let total_spent = user.money_spent + result.price
+                        let new_main = user.main_balance - result.price
+                        console.log('new main', new_main)
+                        console.log(user.main_balance)
                         let saving_goal = user.budget
                         let date = new Date()
                         let dd = date.getDate()
@@ -105,10 +108,12 @@ module.exports = {
                                     expense: idExpense
                                 },
                                 $set : {
-                                    money_spent : total_spent
+                                    money_spent : total_spent,
+                                    main_balance : new_main
                                 }
                             })
                             .then((result) => {
+                                console.log(result)
                                if(message){
                                    Admin.messaging().send(message)
                                        .then((result) => {
@@ -184,11 +189,15 @@ module.exports = {
                     })
                     .populate('expense')
                     .then((result) => {
-                        
-                        let newMoney_spent = result.main_balance - price
+                        console.log(result,'user')
+                        let newTotal_balance = result.main_balance + price
+                        let newMoney_spent = result.money_spent - price
                         User.update(
                             { email: email },
-                            { main_balance: newMoney_spent }
+                            { 
+                                main_balance: newTotal_balance, 
+                                money_spent: newMoney_spent
+                            }
                         )
                             .then((result) => {
                                 
