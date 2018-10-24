@@ -6,6 +6,9 @@ Admin.initializeApp({
     credential: Admin.credential.cert(serviceAccount),
     databaseURL: "https://piti-app.firebaseio.com"
 });
+const vision = require('@google-cloud/vision');
+// Creates a client
+const client = new vision.ImageAnnotatorClient();
 
 function setDate (params){
     let date ;
@@ -23,7 +26,39 @@ function setDate (params){
 }
 
 module.exports = {
+    visionCreate : (req,res,next) =>{
+        console.log('masuk sini')
+        const fileName = req.body.url
+        client
+        .textDetection(fileName)
+        .then(results => {
+            const detections = results[0].textAnnotations;
+            console.log(results[0].textAnnotations[0].description)
+            let arr = results[0].textAnnotations[0].description.split('\n')
+            console.log(arr)
+            let total = 0
+            for(let i=0;i<arr.length;i++){
+                if(arr[i]=='Change'){
+                    console.log(arr[i])
+                    total = Number(arr[i+1])
+                    break;
+                }
+            }
+            req.body = {
+                price : total,
+                description : arr[0],
+                type : 'Food & Drink',
+                date : new Date()
+            }
+            next()
+        })
+        .catch(err => {
+            console.error('ERROR:', err);
+        });
+    },
+
     createExpense: (req, res) => {
+        console.log(req.body,'create expense')
         let url
         if (req.body.type == 'Food & Drink') {
             url = '../assets/icons/fried-egg.png'
@@ -180,7 +215,7 @@ module.exports = {
                 let expanse = new Expense({
                     _id: id
                 })
-                
+
                 expanse.remove()
                 .then((result) => {
 
@@ -194,27 +229,27 @@ module.exports = {
                         let newMoney_spent = result.money_spent - price
                         User.update(
                             { email: email },
-                            { 
-                                main_balance: newTotal_balance, 
+                            {
+                                main_balance: newTotal_balance,
                                 money_spent: newMoney_spent
                             }
                         )
                             .then((result) => {
-                                
+
                                  res.status(201).json({
                                     message: 'delete expense & update user success',
                                     expense: result
                                 })
                             })
                             .catch((err) => {
-                                
+
                             });
-         
+
                     })
                     .catch((err) => {
                         console.log(err)
                     });
-                   
+
                 }).catch((err) => {
                     res.status(400).json(err)
                 });
