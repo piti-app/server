@@ -1,9 +1,7 @@
 const User = require('../models/user')
-var kue = require('kue')
-  , queue = kue.createQueue();
 
 module.exports = {
-    getUser : (req,res) => {        
+    getUser : (req,res) => {
        User.findOne({
            email : req.params.email
        })
@@ -18,24 +16,19 @@ module.exports = {
                 })
             });
     },
-    registerUser : (req,res) => {      
+    registerUser : (req,res) => {
         User.create({
             name: req.body.name,
             email: req.body.email,
             avatar: req.body.avatar
-        })        
+        })
              .then((result) => {
                 let usersaving =  {
                     user : result
-                   }  
-                queue.create('usersaving', usersaving).save( function(err){
-                    if( !err ) {
-                      console.log('Job created!')
-                    }
-                })    
+                   }
                     res.status(201).json({
                         user : result
-                    })                      
+                    })
              }).catch((err) => {
                  res.status(400).json({
                      err
