@@ -4,7 +4,6 @@ const baseURL = `http://localhost:4000`
 module.exports = {
   getRecommendation : (req,res) =>{
     const id = req.body.id
-    console.log(req.body)
     const moneyLeft = Number(req.body.main_balance) - Number(req.body.money_spent) - Number(req.body.budget)
     const today = new Date()
     let day = today.getDate()

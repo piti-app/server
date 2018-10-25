@@ -32,9 +32,11 @@ describe('Expense Testing Delete', function() {
               exId = result._id
             }).catch((err) => {
               console.log(err);
+              res.status(400).json(err)
             });
         }).catch((err) => {
           console.log(err);
+          res.status(400).json(err)
         });
     })
 
