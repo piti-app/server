@@ -52,6 +52,7 @@ module.exports = {
             });
      },
      updateProfileUser : (req,res) => {
+         console.log(req.body)
         User.update({
            email : req.params.email
         },{
@@ -59,7 +60,7 @@ module.exports = {
             avatar: req.body.avatar,
             email: req.body.email,
             budget : req.body.budget,
-            main_balance:  req.body.main_balance
+            main_balance:  req.body.main_balance-req.body.spent
         })
            .then((result) => {
                res.status(201).json({

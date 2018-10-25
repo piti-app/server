@@ -28,6 +28,7 @@ function setDate (params){
 module.exports = {
     visionCreate : (req,res,next) =>{
         console.log('masuk sini')
+        console.log('token', req.body.fcmToken)
         const fileName = req.body.url
         client
         .textDetection(fileName)
@@ -76,6 +77,7 @@ module.exports = {
             url = '../assets/icons/user.png'
         }
         let registrationToken = req.body.fcmToken
+        console.log(registrationToken,'regis token')
         let message;
         Expense.create({
                 date: req.body.date,
