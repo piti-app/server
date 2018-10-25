@@ -37,16 +37,16 @@ module.exports = {
 
       })
       .catch(error=>{
-        res.status(500).json({
-          error
-        })
+        // res.status(500).json({
+        //   error
+        // })
       })
   },
 
   getNewRecommendation : (req,res) =>{
     const moneyLeft = Number(req.body.main_balance) - Number(req.body.money_spent) - Number(req.body.budget)
     const today = new Date()
- 
+
     let day = today.getDate()
     let daysLeft = 30 - day
     let budgetPerMeal = Math.floor(moneyLeft/(daysLeft*3))
@@ -61,9 +61,9 @@ module.exports = {
         })
       })
       .catch(error=>{
-        res.status(500).json({
-          error
-        })
+        // res.status(500).json({
+        //   error
+        // })
       })
     // axios({
     //   method : "POST",

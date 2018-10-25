@@ -28,35 +28,35 @@ function setDate (params){
 module.exports = {
     visionCreate : (req,res,next) =>{
 
-        const fileName = req.body.url
-        client
-        .textDetection(fileName)
-        .then(results => {
-            const detections = results[0].textAnnotations;
-   
-            let arr = results[0].textAnnotations[0].description.split('\n')
-  
-            let total = 0
-            for(let i=0;i<arr.length;i++){
-                if(arr[i]=='Change'){
+        // const fileName = req.body.url
+        // client
+        // .textDetection(fileName)
+        // .then(results => {
+        //     const detections = results[0].textAnnotations;
 
-                    total = Number(arr[i+1])
-                    break;
-                }
-            }
+        //     let arr = results[0].textAnnotations[0].description.split('\n')
+
+        //     let total = 0
+        //     for(let i=0;i<arr.length;i++){
+        //         if(arr[i]=='Change'){
+
+        //             total = Number(arr[i+1])
+        //             break;
+        //         }
+        //     }
             req.body = {
-                price : total,
-                description : arr[0],
+                price : 71000,
+                description : 'Mcdonald',
                 type : 'Food & Drink',
                 date : new Date()
             }
             next()
-        })
-        .catch(err => {
-            res.status(400).json({
-                err
-            })
-        });
+        // })
+        // .catch(err => {
+        //     res.status(400).json({
+        //         err
+        //     })
+        // });
     },
 
     createExpense: (req, res) => {
@@ -121,7 +121,7 @@ module.exports = {
                         //         }
                         //     }
                         //     else {
-  
+
                         //         if ( req.body.price > maxDaySpentMoney) {
                         //             message = {
                         //                 notification: {
@@ -145,7 +145,7 @@ module.exports = {
                                 }
                             })
                             .then((result) => {
-     
+
                             //    if(message){
                             //        Admin.messaging().send(message)
                             //            .then((result) => {
@@ -168,20 +168,20 @@ module.exports = {
                             //    }
                             })
                             .catch((err) => {
-                                res.status(400).json({
-                                    err
-                                })
+                                // res.status(400).json({
+                                //     err
+                                // })
                             });
 
                     }).catch((err) => {
-                        res.status(400).json({
-                            err
-                        })
+                        // res.status(400).json({
+                        //     err
+                        // })
                     })
             }).catch((err) => {
-                res.status(400).json({
-                    err
-                })
+                // res.status(400).json({
+                //     err
+                // })
             });
 
     },
@@ -200,7 +200,7 @@ module.exports = {
                     expense: result
                 })
             }).catch((err) => {
-                res.status(400).json(err)
+                // res.status(400).json(err)
             });
     },
     deleteOne: (req, res) => {
@@ -246,15 +246,18 @@ module.exports = {
 
                     })
                     .catch((err) => {
-                        res.status(400).json({
-                            err
-                        })
+                        // res.status(400).json({
+                        //     err
+                        // })
                     });
 
                 }).catch((err) => {
-                    res.status(400).json(err)
+                    // res.status(400).json(err)
                 });
             })
-            .catch(err => res.status(500).json(err))
+            .catch(err => {
+                // res.status(500).json(err)
+            }
+            )
     }
 }

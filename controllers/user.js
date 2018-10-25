@@ -11,9 +11,9 @@ module.exports = {
                     user : result
                 })
             }).catch((err) => {
-                res.status(400).json({
-                    err
-                })
+                // res.status(400).json({
+                //     err
+                // })
             });
     },
     registerUser : (req,res) => {
@@ -30,9 +30,9 @@ module.exports = {
                         user : result
                     })
              }).catch((err) => {
-                 res.status(400).json({
-                     err
-                 })
+                //  res.status(400).json({
+                //      err
+                //  })
              });
      },
      updateUser : (req,res) => {
@@ -48,7 +48,7 @@ module.exports = {
                     user : result
                 })
             }).catch((err) => {
-                res.status(400).json(err)
+                // res.status(400).json(err)
             });
      },
      updateProfileUser : (req,res) => {
@@ -67,7 +67,7 @@ module.exports = {
                    user : result
                })
            }).catch((err) => {
-               res.status(400).json(err)
+            //    res.status(400).json(err)
            });
     }
 }
