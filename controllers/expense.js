@@ -27,19 +27,19 @@ function setDate (params){
 
 module.exports = {
     visionCreate : (req,res,next) =>{
-        console.log('masuk sini')
+
         const fileName = req.body.url
         client
         .textDetection(fileName)
         .then(results => {
             const detections = results[0].textAnnotations;
-            console.log(results[0].textAnnotations[0].description)
+   
             let arr = results[0].textAnnotations[0].description.split('\n')
-            console.log(arr)
+  
             let total = 0
             for(let i=0;i<arr.length;i++){
                 if(arr[i]=='Change'){
-                    console.log(arr[i])
+
                     total = Number(arr[i+1])
                     break;
                 }
@@ -53,12 +53,14 @@ module.exports = {
             next()
         })
         .catch(err => {
-            console.error('ERROR:', err);
+            res.status(400).json({
+                err
+            })
         });
     },
 
     createExpense: (req, res) => {
-        console.log(req.body,'create expense')
+
         let url
         if (req.body.type == 'Food & Drink') {
             url = '../assets/icons/fried-egg.png'
@@ -101,41 +103,36 @@ module.exports = {
                         let balance = user.main_balance
                         let total_spent = user.money_spent + result.price
                         let new_main = user.main_balance - result.price
-                        console.log('new main', new_main)
-                        console.log(user.main_balance)
                         let saving_goal = user.budget
                         let date = new Date()
                         let dd = date.getDate()
                         let maxDaySpentMoney = (balance - saving_goal) / (30-dd)
-                        console.log(expensesToday.length)
-                        console.log(maxDaySpentMoney)
-                        console.log(registrationToken)
-                        if(setDate() == setDate(req.body.date)){
-                            if( expensesToday.length!==0){
-                                console.log('udah belanja hari ini')
-                                if ( expensesToday.reduce(reducer) > maxDaySpentMoney) {
-                                    message = {
-                                        notification: {
-                                            title: 'WARNING',
-                                            body: 'you spent money too much out from your plan'
-                                        },
-                                        token: registrationToken
-                                    }
-                                }
-                            }
-                            else {
-                                console.log('belom belanja hari ini')
-                                if ( req.body.price > maxDaySpentMoney) {
-                                    message = {
-                                        notification: {
-                                            title: 'WARNING',
-                                            body: 'you spent money too much out from your plan'
-                                        },
-                                        token: registrationToken
-                                    }
-                                }
-                            }
-                        }
+                        // if(setDate() == setDate(req.body.date)){
+                        //     if( expensesToday.length!==0){
+
+                        //         if ( expensesToday.reduce(reducer) > maxDaySpentMoney) {
+                        //             message = {
+                        //                 notification: {
+                        //                     title: 'WARNING',
+                        //                     body: 'you spent money too much out from your plan'
+                        //                 },
+                        //                 token: registrationToken
+                        //             }
+                        //         }
+                        //     }
+                        //     else {
+  
+                        //         if ( req.body.price > maxDaySpentMoney) {
+                        //             message = {
+                        //                 notification: {
+                        //                     title: 'WARNING',
+                        //                     body: 'you spent money too much out from your plan'
+                        //                 },
+                        //                 token: registrationToken
+                        //             }
+                        //         }
+                        //     }
+                        // }
                         User.findOneAndUpdate({
                                 email: req.params.email
                             }, {
@@ -148,25 +145,27 @@ module.exports = {
                                 }
                             })
                             .then((result) => {
-                                console.log(result)
-                               if(message){
-                                   Admin.messaging().send(message)
-                                       .then((result) => {
-                                           res.status(201).json({
-                                               message: 'create expense success',
-                                               user: result
-                                           })
+     
+                            //    if(message){
+                            //        Admin.messaging().send(message)
+                            //            .then((result) => {
+                            //                res.status(201).json({
+                            //                    message: 'create expense success',
+                            //                    user: result
+                            //                })
 
-                                       }).catch((err) => {
-                                           console.log(err)
-                                       });
-                               }
-                               else {
+                            //            }).catch((err) => {
+                            //                 res.status(400).json({
+                            //                     err
+                            //                 })
+                            //            });
+                            //    }
+                            //    else {
                                 res.status(201).json({
                                     message: 'create expense success',
                                     user: result
                                 })
-                               }
+                            //    }
                             })
                             .catch((err) => {
                                 res.status(400).json({
@@ -224,7 +223,7 @@ module.exports = {
                     })
                     .populate('expense')
                     .then((result) => {
-                        console.log(result,'user')
+
                         let newTotal_balance = result.main_balance + price
                         let newMoney_spent = result.money_spent - price
                         User.update(
@@ -247,7 +246,9 @@ module.exports = {
 
                     })
                     .catch((err) => {
-                        console.log(err)
+                        res.status(400).json({
+                            err
+                        })
                     });
 
                 }).catch((err) => {

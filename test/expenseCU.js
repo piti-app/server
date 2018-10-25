@@ -14,15 +14,16 @@ describe('expense POST & PUT', function () {
     before(function (done) {
       User.create({
         name: "wahyudi",
-        email: "khodhirobbani@gmail.com",
+        email: "umatlucu@mail.com",
         avatar: "gambar"      
       })
-      .then((foundUser) => {      
+      .then((foundUser) => { 
+        console.log(foundUser)     
           id_User = foundUser._id
             Expense.create({
             date: new Date(),
             price: 20000,
-            type: 'food',
+            type: 'Food & Drink',
             description: 'kfc ayam',
             user: id_User,
             })
@@ -43,14 +44,14 @@ describe('expense POST & PUT', function () {
     describe('create & update Expense', function () {
       it('it should create expense', function (done) {
         chai.request(server)
-        .post('/expense/create/khodhirobbani@gmail.com')
+        .post('/expense/create/umatlucu@mail.com')
         .send({
             date: new Date(),
             price: 15000,
             type: 'food',
             description: 'Warteg',
             url: '../assets/icons/fried-egg.png',
-            fcmToken: 'dGGj3Yk2Z-k:APA91bHc4y2ek7bn6mIXUpOlFLscXtxQ6x7YwM9_iwxeSKprohbNi_Ji0BhIK0ajEc33Espg8XpHRTqTF5gHq1qTuFWztPiDaN5m4-NXym3ZyBQ5WQg7G4Y51T_4LwNcHGrJDJaTPf3O'
+            fcmToken: 'e7r8s8gYnvA:APA91bHFpSxOE67ZG-i__bJRBMDzXBzgwBMJTKAr-VnyVyDaQ9FxdfwC1316_7pNfq_HQ4A1ctfAQ7C9EhpQDE-M6lyTxMTHvhroWnWUOTxODmcnzxLBrvaTGsd740RzcTTp8RoWu2Ek'
         })
         .end(function(err, res) {
             expect(res).to.have.status(201)
@@ -59,8 +60,22 @@ describe('expense POST & PUT', function () {
             expect(res.body).have.property('message');
             expect(res.body).have.property('user');
             expect(res.body.message).equal('create expense success');
-            expect(res.body.message).be.a('string');
-            expect(res.body.user).be.a('string');
+            expect(res.body.user).be.a('object');
+            expect(res.body.user).have.property('budget');
+            expect(res.body.user.budget).equal(0);
+            expect(res.body.user).have.property('main_balance');
+            expect(res.body.user.main_balance).equal(0);
+            expect(res.body.user).have.property('money_spent');
+            expect(res.body.user.money_spent).equal(0);
+            expect(res.body.user).have.property('saving');
+            expect(res.body.user.saving).equal(0);
+            expect(res.body.user).have.property('expense');
+            expect(res.body.user).have.property('_id');
+            expect(res.body.user).have.property('name');
+            expect(res.body.user).have.property('avatar');
+            expect(res.body.user).have.property('email');
+            expect(res.body.user).have.property('createdAt');
+            expect(res.body.user).have.property('updatedAt');
             done()
         })
       })
@@ -71,7 +86,7 @@ describe('expense POST & PUT', function () {
         .send({
             date: new Date(),
             price: 15000,
-            type: 'food',
+            type: 'Food & Drink',
             description: 'Solaria',
         })
         .end(function(err, res) { 
