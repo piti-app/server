@@ -61,22 +61,22 @@ module.exports = {
 
     createExpense: (req, res) => {
 
-        let url
-        if (req.body.type == 'Food & Drink') {
-            url = '../assets/icons/fried-egg.png'
-        } else if (req.body.type == 'Transport') {
-            url = '../assets/icons/car.png'
-        } else if (req.body.type == 'Personal') {
-            url = '../assets/icons/piggy-bank.png'
-        } else if (req.body.type == 'Electronic') {
-            url = '../assets/icons/headphones.png'
-        } else if (req.body.type == 'Clothes') {
-            url = '../assets/icons/basketball-jersey.png'
-        } else if (req.body.type == 'Entertainment') {
-            url = '../assets/icons/monitor.png'
-        } else {
-            url = '../assets/icons/user.png'
-        }
+        let url = ''
+        // if (req.body.type == 'Food & Drink') {
+        //     url = '../assets/icons/fried-egg.png'
+        // } else if (req.body.type == 'Transport') {
+        //     url = '../assets/icons/car.png'
+        // } else if (req.body.type == 'Personal') {
+        //     url = '../assets/icons/piggy-bank.png'
+        // } else if (req.body.type == 'Electronic') {
+        //     url = '../assets/icons/headphones.png'
+        // } else if (req.body.type == 'Clothes') {
+        //     url = '../assets/icons/basketball-jersey.png'
+        // } else if (req.body.type == 'Entertainment') {
+        //     url = '../assets/icons/monitor.png'
+        // } else {
+        //     url = '../assets/icons/user.png'
+        // }
         let registrationToken = req.body.fcmToken
         let message;
         Expense.create({
