@@ -54,6 +54,15 @@ module.exports = {
                         total = Number(arr[i+1])
                         break;
                     }
+                    else if(arr[i]==='Total'){
+                      console.log(arr[i])
+                        total = parseFloat(arr[i-1].replace(/,/g, ''))
+                        break;
+                    }
+                    else if(arr[i]=='Change Rp.'){
+                      total = parseFloat(arr[i+1].replace(/,/g, ''))
+                        break;
+                    }
                 }
               }
             req.body = {
