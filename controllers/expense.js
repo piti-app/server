@@ -37,14 +37,25 @@ module.exports = {
             console.log(results[0].textAnnotations[0].description)
             let arr = results[0].textAnnotations[0].description.split('\n')
             console.log(arr)
-            let total = 0
-            for(let i=0;i<arr.length;i++){
-                if(arr[i]=='Change'){
+            if(arr[0]=='Fish & Co'){
+                for(let i=0;i<arr.length;i++){
+                  if(arr[i]=='TOTAL'){
                     console.log(arr[i])
-                    total = Number(arr[i+1])
+                    console.log(arr[i-1])
+                    total = parseFloat(arr[i-1].replace(/,/g, ''));
                     break;
+                  }
                 }
-            }
+              }
+              else {
+                for(let i=0;i<arr.length;i++){
+                    if(arr[i]=='Change'){
+                        console.log(arr[i])
+                        total = Number(arr[i+1])
+                        break;
+                    }
+                }
+              }
             req.body = {
                 price : total,
                 description : arr[0],
